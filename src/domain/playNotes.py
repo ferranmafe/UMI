@@ -11,16 +11,15 @@ class PlayNotes:
         for i in range(8):
             canales[i] = pygame.mixer.Channel(i)
 
-        s = "/home/adri/Desktop/sonidos/"
         sounds = {}
-        sounds['do'] = pygame.mixer.Sound(s + "do.wav")
-        sounds['re'] = pygame.mixer.Sound(s + "re.wav")
-        sounds['mi'] = pygame.mixer.Sound(s + "mi.wav")
-        sounds['fa'] = pygame.mixer.Sound(s + "fa.wav")
-        sounds['sol']= pygame.mixer.Sound(s + "sol.wav")
-        sounds['la'] = pygame.mixer.Sound(s + "la.wav")
-        sounds['si'] = pygame.mixer.Sound(s + "si.wav")
-        sounds['do*'] = pygame.mixer.Sound(s + "do'.wav")
+        sounds['do'] = pygame.mixer.Sound("./sonidos/do.wav")
+        sounds['re'] = pygame.mixer.Sound("./sonidos/re.wav")
+        sounds['mi'] = pygame.mixer.Sound("./sonidos/mi.wav")
+        sounds['fa'] = pygame.mixer.Sound("./sonidos/fa.wav")
+        sounds['sol']= pygame.mixer.Sound("./sonidos/sol.wav")
+        sounds['la'] = pygame.mixer.Sound("./sonidos/la.wav")
+        sounds['si'] = pygame.mixer.Sound("./sonidos/si.wav")
+        sounds['do*'] = pygame.mixer.Sound("./sonidos/do'.wav")
         self.canales = canales
         self.sounds = sounds
 
