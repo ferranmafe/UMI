@@ -16,6 +16,9 @@ class PresentationController(tk.Tk):
       self._frame.destroy()
       self._frame = new_frame
 
+    def main_node_thread(self):
+      print('asd')
+
 
 if __name__ == "__main__":
     app = PresentationController()
