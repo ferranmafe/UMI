@@ -1,12 +1,17 @@
-import sys, Leap, Hand, math
-
-
+import Leap, Hand, math, time
 
 class CtrlLeapmotion:
     ctrlLeapmotion = None
     hands = {}
     actFrame = None
-    thresholdAngle = 50 * math.pi/180.0
+    thresholdAngle = {Leap.Finger.TYPE_THUMB : 25 * math.pi/180.0,
+                      Leap.Finger.TYPE_INDEX : 25 * math.pi/180.0,
+                      Leap.Finger.TYPE_MIDDLE : 25 * math.pi/180.0,
+                      Leap.Finger.TYPE_RING : 20 * math.pi/180.0,
+                      Leap.Finger.TYPE_PINKY : 30 * math.pi/180.0}
+
+    OCTAVE_LIMIT_1 = 120
+    OCTAVE_LIMIT_2 = 240
 
     def __init__(self):
         self.ctrlLeapmotion = Leap.Controller()
@@ -52,7 +57,7 @@ class CtrlLeapmotion:
         fingerMetacarpal = finger.bone(Leap.Bone.TYPE_METACARPAL).direction
         fingerPhalange = finger.bone(Leap.Bone.TYPE_PROXIMAL).direction
         detectedAngle = fingerMetacarpal.angle_to(fingerPhalange)
-        return detectedAngle >= self.thresholdAngle
+        return detectedAngle >= self.thresholdAngle[finger.type]
 
     def getNewState(self, previousState, eventDetected):
         if (eventDetected and (previousState == Hand.finger_state.HELD or previousState == Hand.finger_state.TRIGGER)):
@@ -60,6 +65,14 @@ class CtrlLeapmotion:
         elif (eventDetected and previousState == Hand.finger_state.IDLE):
             return Hand.finger_state.TRIGGER
         return Hand.finger_state.IDLE
+
+    def getTriggeredFingers(self):
+
+        for hand in self.hands
+
+
+    def getTriggeredAndHeldFingers(self):
+
 
     def degToRad(self, deg):
         return deg * math.pi / 180.0
@@ -71,6 +84,7 @@ def main():
     c = CtrlLeapmotion()
     while 1:
         c.updateState()
+        time.sleep(2)
 
 
 if __name__ == "__main__":
