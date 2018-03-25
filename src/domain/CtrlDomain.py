@@ -34,7 +34,7 @@ def main():
     domain = CtrlDomain()
     domain.initializeAction()
     while 1:
-        pass
+        domain.getNextMove()
 
 if __name__ == "__main__":
     main()
