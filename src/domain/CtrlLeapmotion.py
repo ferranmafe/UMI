@@ -4,14 +4,14 @@ class CtrlLeapmotion:
     ctrlLeapmotion = None
     hands = {}
     actFrame = None
-    thresholdAngle = {Leap.Finger.TYPE_THUMB : 35 * math.pi/180.0,
+    thresholdAngle = {Leap.Finger.TYPE_THUMB : 0 * math.pi/180.0,
                       Leap.Finger.TYPE_INDEX : 35 * math.pi/180.0,
                       Leap.Finger.TYPE_MIDDLE : 35 * math.pi/180.0,
-                      Leap.Finger.TYPE_RING : 30 * math.pi/180.0,
+                      Leap.Finger.TYPE_RING : 40 * math.pi/180.0,
                       Leap.Finger.TYPE_PINKY : 35 * math.pi/180.0}
 
-    OCTAVE_LIMIT_1 = 180
-    OCTAVE_LIMIT_2 = 300
+    OCTAVE_LIMIT_1 = 210
+    OCTAVE_LIMIT_2 = 320
 
     def __init__(self):
         self.ctrlLeapmotion = Leap.Controller()
@@ -106,21 +106,23 @@ class CtrlLeapmotion:
 
             elif hand.height >= self.OCTAVE_LIMIT_2:
                 i = 2
+
             """   if self.hands[it].hand_type == Hand.hand_types.RIGHT_HAND:
                 res[i] = [0, 0, 0, 0, 2, 2, 2, 2]
             else:
                 res[i] = [2, 2, 2, 2, 0, 0, 0, 0] """
 
             if hand.hand_type == 0:
-                res[i][0] = (hand.finger_states[Leap.Finger.TYPE_PINKY] != Hand.finger_state.IDLE)
-                res[i][1] = (hand.finger_states[Leap.Finger.TYPE_RING] != Hand.finger_state.IDLE)
-                res[i][2] = (hand.finger_states[Leap.Finger.TYPE_MIDDLE] != Hand.finger_state.IDLE)
-                res[i][3] = (hand.finger_states[Leap.Finger.TYPE_INDEX] != Hand.finger_state.IDLE)
+                res[i][0] = 2 - (hand.finger_states[Leap.Finger.TYPE_PINKY] != Hand.finger_state.IDLE)
+                res[i][1] = 2 - (hand.finger_states[Leap.Finger.TYPE_RING] != Hand.finger_state.IDLE)
+                res[i][2] = 2 - (hand.finger_states[Leap.Finger.TYPE_MIDDLE] != Hand.finger_state.IDLE)
+                res[i][3] = 2 - (hand.finger_states[Leap.Finger.TYPE_INDEX] != Hand.finger_state.IDLE)
             else:
-                res[i][4] = (hand.finger_states[Leap.Finger.TYPE_INDEX] != Hand.finger_state.IDLE)
-                res[i][5] = (hand.finger_states[Leap.Finger.TYPE_MIDDLE] != Hand.finger_state.IDLE)
-                res[i][6] = (hand.finger_states[Leap.Finger.TYPE_RING] != Hand.finger_state.IDLE)
-                res[i][7] = (hand.finger_states[Leap.Finger.TYPE_PINKY] != Hand.finger_state.IDLE)
+                res[i][4] = 2 - (hand.finger_states[Leap.Finger.TYPE_INDEX] != Hand.finger_state.IDLE)
+                res[i][5] = 2 - (hand.finger_states[Leap.Finger.TYPE_MIDDLE] != Hand.finger_state.IDLE)
+                res[i][6] = 2 - (hand.finger_states[Leap.Finger.TYPE_RING] != Hand.finger_state.IDLE)
+                res[i][7] = 2 - (hand.finger_states[Leap.Finger.TYPE_PINKY] != Hand.finger_state.IDLE)
+
         return res
 
     def degToRad(self, deg):

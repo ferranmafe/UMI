@@ -6,7 +6,7 @@ from threading import Thread
 class PlayMusicView(tk.Frame):
   def __init__(self, master, controller):
     tk.Frame.__init__(self, master)
-    self._notes = ['do', 're', 'mi', 'fa', 'sol', 'la', 'si', 'do']
+    self._notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C']
     self.controller = controller
 
     # ---------- Frames -------------------------------------------------------
@@ -79,27 +79,27 @@ class PlayMusicView(tk.Frame):
         for k in range(0, 4):
           if i == 0 and j == 0:
             buttons_note.append(tk.Button(
-              upperNotesLH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k]
+              upperNotesLH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k] + str(i)
             ))
           elif i == 1 and j == 0:
             buttons_note.append(tk.Button(
-              middleNotesLH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k]
+              middleNotesLH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k] + str(i)
             ))
           elif i == 2 and j == 0:
             buttons_note.append(tk.Button(
-              bottomNotesLH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k]
+              bottomNotesLH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k] + str(i)
             ))
           elif i == 0 and j == 1:
             buttons_note.append(tk.Button(
-              upperNotesRH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k + 4]
+              upperNotesRH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k + 4] + str(i)
             ))
           elif i == 1 and j == 1:
             buttons_note.append(tk.Button(
-              middleNotesRH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k + 4]
+              middleNotesRH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k + 4] + str(i)
             ))
           else:
             buttons_note.append(tk.Button(
-              bottomNotesRH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k + 4]
+              bottomNotesRH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k + 4] + str(i)
             ))
         buttons_hand.append(buttons_note)
       self._buttons.append(buttons_hand)
@@ -117,11 +117,17 @@ class PlayMusicView(tk.Frame):
     self.pack()
 
     self.controller.ctrlDomain.initializeAction()
-    self.change_button_colors()
+    self.pooling_for_notes()
     # -------------------------------------------------------------------------
 
-  def change_button_colors(self):
-    pressed_notes = self.controller.res
+  def pooling_for_notes(self):
+    print('Pooling for notes!')
+    self.change_button_colors(self.controller.main_node_thread())
+    self.after(20, self.pooling_for_notes)
+
+  def change_button_colors(self, pressed_notes):
+    print "pressed_notes"
+    print pressed_notes
     for i in range(0, len(pressed_notes)):
       for j in range(0, len(pressed_notes[i])):
         k = 0
@@ -129,10 +135,9 @@ class PlayMusicView(tk.Frame):
           k = 1
 
         if pressed_notes [i][j] == 0:
-          self._buttons[i][k][j%4].configure(bg="white")
+          self._buttons[2-i][k][j%4].config(highlightbackground="white")
         elif pressed_notes [i][j] == 1:
-          self._buttons[i][k][j%4].configure(bg="red")
+          self._buttons[2-i][k][j%4].config(highlightbackground="red")
         elif pressed_notes [i][j] == 2:
-          self._buttons[i][k][j%4].configure(bg="cyan")
-    self.after(10, self.change_button_colors())
+          self._buttons[2-i][k][j%4].config(highlightbackground="cyan")
 

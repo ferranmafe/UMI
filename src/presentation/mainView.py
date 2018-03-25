@@ -14,12 +14,6 @@ class MainView(tk.Frame):
     buttonsFrame = tk.Frame(self, width=100, height=50, bg="#ffffff")
     buttonsFrame.pack(side=tk.TOP, padx=20, pady=20)
 
-    """
-    photo = tk.PhotoImage(file="title.png")
-    start_label = tk.Label(titleFrame, image=photo)
-    start_label.image = photo
-    """
-
     start_label = tk.Label(
       titleFrame,
       text="UMI - Universal Music Instrument",
