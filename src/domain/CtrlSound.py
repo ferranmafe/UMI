@@ -4,9 +4,10 @@ class CtrlSound:
     soundPlayer = None
 
     def __init__(self):
-        self.soundPlayer = SoundPlayer()
+        self.soundPlayer = SoundPlayer.SoundPlayer()
 
     def reproduceSoundEvents(self, soundEventsDetected):
+
         self.soundPlayer.playSounds(soundEventsDetected)
 
 def main():
