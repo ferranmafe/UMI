@@ -2,21 +2,21 @@ import pygame, time
 
 class SoundPlayer:
     sounds = []
+    channels = []
 
     def __init__(self):
         pygame.init()
-        sounds = [0 for i in range(7)]
-        for i in range(7):
-            sounds[i] = pygame.mixer.Sound("./sonidos/" + str(i) + ".wav")
+        channels = [0 for i in range(8)]
+        for i in range(8):
+            channels[i] = pygame.mixer.Channel(i)
+        sounds = [0 for i in range(24)]
+        for i in range(24):
+            sounds[i] = pygame.mixer.Sound("./sonidos2/" + str(i) + ".wav")
         self.sounds = sounds
+        self.channels = channels
 
     def playSounds(self, key):
-        print key
-        for i in range(0, 7): #Should be len(key)
+        for i in range(0, len(key)):
             if key[i]:
                 channel = pygame.mixer.find_channel(True)
-                print(channel)
                 channel.play(self.sounds[i])
-
-        while 1:
-            pass

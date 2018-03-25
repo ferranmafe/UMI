@@ -16,7 +16,7 @@ class CtrlDomain:
         self.updateLeapmotionState()
         soundEventsDetected = self.detectSoundEvents()
         self.reproduceSoundEvents(soundEventsDetected)
-        return self.detectPressEvents()
+        #return self.detectPressEvents()
 
     def detectSoundEvents(self):
         return self.ctrlLeapmotion.getTriggeredFingers()

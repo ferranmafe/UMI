@@ -4,6 +4,7 @@ import SoundPlayer
 
 def main():
     pn = SoundPlayer.PlayNotes()
+
     pn.inicializar()
 
     pn.tocar(['la','re','fa'])
