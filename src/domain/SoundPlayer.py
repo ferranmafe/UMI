@@ -18,5 +18,4 @@ class SoundPlayer:
     def playSounds(self, key):
         for i in range(0, len(key)):
             if key[i]:
-                channel = pygame.mixer.find_channel(True)
-                channel.play(self.sounds[i])
+                self.channels[i % 8].play(self.sounds[i])

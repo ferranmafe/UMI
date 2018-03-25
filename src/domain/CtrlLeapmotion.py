@@ -4,14 +4,14 @@ class CtrlLeapmotion:
     ctrlLeapmotion = None
     hands = {}
     actFrame = None
-    thresholdAngle = {Leap.Finger.TYPE_THUMB : 25 * math.pi/180.0,
-                      Leap.Finger.TYPE_INDEX : 25 * math.pi/180.0,
-                      Leap.Finger.TYPE_MIDDLE : 25 * math.pi/180.0,
-                      Leap.Finger.TYPE_RING : 20 * math.pi/180.0,
-                      Leap.Finger.TYPE_PINKY : 30 * math.pi/180.0}
+    thresholdAngle = {Leap.Finger.TYPE_THUMB : 35 * math.pi/180.0,
+                      Leap.Finger.TYPE_INDEX : 35 * math.pi/180.0,
+                      Leap.Finger.TYPE_MIDDLE : 35 * math.pi/180.0,
+                      Leap.Finger.TYPE_RING : 30 * math.pi/180.0,
+                      Leap.Finger.TYPE_PINKY : 35 * math.pi/180.0}
 
-    OCTAVE_LIMIT_1 = 120
-    OCTAVE_LIMIT_2 = 240
+    OCTAVE_LIMIT_1 = 180
+    OCTAVE_LIMIT_2 = 300
 
     def __init__(self):
         self.ctrlLeapmotion = Leap.Controller()
@@ -23,11 +23,8 @@ class CtrlLeapmotion:
         while (not self.ctrlLeapmotion.frame().is_valid):
             pass
         self.actFrame = self.ctrlLeapmotion.frame()
-        handlist = self.actFrame.hands
-        for hand in handlist:
-            id = hand.id
-            height = self.getHandHeight(hand)
-            self.hands[id] = Hand.Hand(int(hand.is_right), height)
+        self.hands[0] = Hand.Hand(0, 0.0)
+        self.hands[1] = Hand.Hand(1, 0.0)
 
     def getHandHeight(self, hand):
         return hand.wrist_position.y
@@ -44,14 +41,24 @@ class CtrlLeapmotion:
         self.actFrame = self.ctrlLeapmotion.frame()
         print("\nFrame ID: " + str(self.actFrame.id) + "\n")
         handlist = self.actFrame.hands
+        handDetector = 0;
         for hand in handlist:
-            id = hand.id
+            id = hand.is_right
+            handDetector += id + 1
             for finger in hand.fingers:
                 previousState = self.hands[id].getFingerState(finger.type)
                 eventDetected = self.detectEvent(finger)
                 fingerState = self.getNewState(previousState, eventDetected)
                 self.hands[id].setFingerState(finger.type, fingerState)
+                self.hands[id].height = self.getHandHeight(hand)
             self.hands[id].printHandStatus()
+        if handDetector == 0:
+            self.hands[0] = Hand.Hand(0, 0.0)
+            self.hands[1] = Hand.Hand(1, 0.0)
+        elif handDetector == 1:
+            self.hands[1] = Hand.Hand(1, 0.0)
+        elif handDetector == 2:
+            self.hands[0] = Hand.Hand(0, 0.0)
 
 
     def detectEvent(self, finger):
@@ -76,7 +83,7 @@ class CtrlLeapmotion:
                 i = 0
             elif hand.height >= self.OCTAVE_LIMIT_2:
                 i = 2
-            if not hand.hand_type:
+            if hand.hand_type == 0:
                 res[i][0] = (hand.finger_states[Leap.Finger.TYPE_PINKY] == Hand.finger_state.TRIGGER)
                 res[i][1] = (hand.finger_states[Leap.Finger.TYPE_RING] == Hand.finger_state.TRIGGER)
                 res[i][2] = (hand.finger_states[Leap.Finger.TYPE_MIDDLE] == Hand.finger_state.TRIGGER)
@@ -104,7 +111,7 @@ class CtrlLeapmotion:
             else:
                 res[i] = [2, 2, 2, 2, 0, 0, 0, 0] """
 
-            if not hand.hand_type:
+            if hand.hand_type == 0:
                 res[i][0] = (hand.finger_states[Leap.Finger.TYPE_PINKY] != Hand.finger_state.IDLE)
                 res[i][1] = (hand.finger_states[Leap.Finger.TYPE_RING] != Hand.finger_state.IDLE)
                 res[i][2] = (hand.finger_states[Leap.Finger.TYPE_MIDDLE] != Hand.finger_state.IDLE)

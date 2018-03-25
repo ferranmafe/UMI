@@ -4,10 +4,6 @@ class CtrlDomain:
     ctrlLeapmotion = None
     ctrlSound = None
 
-    def __init__(self):
-        pass
-
-
     def initializeAction(self):
         self.ctrlLeapmotion = CtrlLeapmotion.CtrlLeapmotion()
         self.ctrlSound = CtrlSound.CtrlSound()
@@ -16,7 +12,7 @@ class CtrlDomain:
         self.updateLeapmotionState()
         soundEventsDetected = self.detectSoundEvents()
         self.reproduceSoundEvents(soundEventsDetected)
-        #return self.detectPressEvents()
+        return self.detectPressEvents()
 
     def detectSoundEvents(self):
         return self.ctrlLeapmotion.getTriggeredFingers()
@@ -34,7 +30,7 @@ def main():
     domain = CtrlDomain()
     domain.initializeAction()
     while 1:
-        domain.getNextMove()
+        pass
 
 if __name__ == "__main__":
     main()
