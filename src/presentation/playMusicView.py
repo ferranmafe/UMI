@@ -114,6 +114,7 @@ class PlayMusicView(tk.Frame):
     left_hand_title.pack()
     right_hand_title.pack()
     self.pack()
+    self.initializeDomain()
     self.pooling_for_notes()
     # -------------------------------------------------------------------------
 
@@ -123,5 +124,18 @@ class PlayMusicView(tk.Frame):
     self.after(2000, self.pooling_for_notes)
 
   def change_button_colors(self, pressed_notes):
-    None
+    for i in range(0, len(pressed_notes)):
+      for j in range(0, len(pressed_notes[i])):
+        k = 0
+        if j >= 4:
+          k = 1
 
+        if pressed_notes [i][j] == 0:
+          self._buttons[i][k][j%4].configure(bg="white")
+        elif pressed_notes [i][j] == 1:
+          self._buttons[i][k][j%4].configure(bg="red")
+        elif pressed_notes [i][j] == 2:
+          self._buttons[i][k][j%4].configure(bg="cyan")
+
+  def initializeDomain(self):
+    self.controller.ctrlDomain.initializeAction()

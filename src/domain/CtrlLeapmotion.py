@@ -53,6 +53,7 @@ class CtrlLeapmotion:
                 self.hands[id].setFingerState(finger.type, fingerState)
             self.hands[id].printHandStatus()
 
+
     def detectEvent(self, finger):
         fingerMetacarpal = finger.bone(Leap.Bone.TYPE_METACARPAL).direction
         fingerPhalange = finger.bone(Leap.Bone.TYPE_PROXIMAL).direction
@@ -84,11 +85,36 @@ class CtrlLeapmotion:
                 res[i][4] = (hand.finger_states[Leap.Finger.TYPE_INDEX] == Hand.finger_state.TRIGGER)
                 res[i][5] = (hand.finger_states[Leap.Finger.TYPE_MIDDLE] == Hand.finger_state.TRIGGER)
                 res[i][6] = (hand.finger_states[Leap.Finger.TYPE_RING] == Hand.finger_state.TRIGGER)
-                res[i][7] = (hand.finger_states[Leap.Finger.TYPE_RING] == Hand.finger_state.TRIGGER)
+                res[i][7] = (hand.finger_states[Leap.Finger.TYPE_PINKY] == Hand.finger_state.TRIGGER)
         return res
 
     def getTriggeredAndHeldFingers(self):
-        pass
+        res = self.initializeStructure()
+        for it in self.hands:
+            hand = self.hands[it]
+
+            i = 1
+            if hand.height <= self.OCTAVE_LIMIT_1:
+                i = 0
+
+            elif hand.height >= self.OCTAVE_LIMIT_2:
+                i = 2
+            """   if self.hands[it].hand_type == Hand.hand_types.RIGHT_HAND:
+                res[i] = [0, 0, 0, 0, 2, 2, 2, 2]
+            else:
+                res[i] = [2, 2, 2, 2, 0, 0, 0, 0] """
+
+            if not hand.hand_type:
+                res[i][0] = (hand.finger_states[Leap.Finger.TYPE_PINKY] != Hand.finger_state.IDLE)
+                res[i][1] = (hand.finger_states[Leap.Finger.TYPE_RING] != Hand.finger_state.IDLE)
+                res[i][2] = (hand.finger_states[Leap.Finger.TYPE_MIDDLE] != Hand.finger_state.IDLE)
+                res[i][3] = (hand.finger_states[Leap.Finger.TYPE_INDEX] != Hand.finger_state.IDLE)
+            else:
+                res[i][4] = (hand.finger_states[Leap.Finger.TYPE_INDEX] != Hand.finger_state.IDLE)
+                res[i][5] = (hand.finger_states[Leap.Finger.TYPE_MIDDLE] != Hand.finger_state.IDLE)
+                res[i][6] = (hand.finger_states[Leap.Finger.TYPE_RING] != Hand.finger_state.IDLE)
+                res[i][7] = (hand.finger_states[Leap.Finger.TYPE_PINKY] != Hand.finger_state.IDLE)
+        return res
 
     def degToRad(self, deg):
         return deg * math.pi / 180.0
