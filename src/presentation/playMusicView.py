@@ -5,17 +5,21 @@ import mainView
 class PlayMusicView(tk.Frame):
   def __init__(self, master, controller):
     tk.Frame.__init__(self, master)
+    self._notes = ['do', 're', 'mi', 'fa', 'sol', 'la', 'si', 'do']
     self.controller = controller
 
     # ---------- Frames -------------------------------------------------------
-    titleFrame = tk.Frame(self, width=100, height=50, bd=4, relief="raised")
+    titleFrame = tk.Frame(self, width=100, height=50)
     titleFrame.pack(side=tk.TOP, padx=20, pady=20)
 
-    notesFrame = tk.Frame(self, width=100, height=50, bd=4, relief="raised")
+    notesFrame = tk.Frame(self, width=100, height=50)
     notesFrame.pack(side=tk.TOP, padx=20, pady=20)
 
-    leftHandFrame = tk.Frame(notesFrame, width=100, height=50, bd=4, relief="raised")
+    leftHandFrame = tk.Frame(notesFrame, width=100, height=50, bd=2, relief="solid")
     leftHandFrame.pack(side=tk.LEFT, padx=20, pady=20)
+
+    leftHandTitleFrame = tk.Frame(leftHandFrame, width=100, height=50)
+    leftHandTitleFrame.pack(side=tk.TOP, padx=20, pady=20)
 
     upperNotesLH = tk.Frame(leftHandFrame, width=100, height=50, bd=4)
     upperNotesLH.pack(side=tk.TOP, padx=20, pady=20)
@@ -26,8 +30,11 @@ class PlayMusicView(tk.Frame):
     bottomNotesLH = tk.Frame(leftHandFrame, width=100, height=50, bd=4)
     bottomNotesLH.pack(side=tk.TOP, padx=20, pady=20)
 
-    rightHandFrame = tk.Frame(notesFrame, width=100, height=50, bd=4, relief="raised")
+    rightHandFrame = tk.Frame(notesFrame, width=100, height=50, bd=2, relief="solid")
     rightHandFrame.pack(side=tk.RIGHT, padx=20, pady=20)
+
+    rightHandTitleFrame = tk.Frame(rightHandFrame, width=100, height=50)
+    rightHandTitleFrame.pack(side=tk.TOP, padx=20, pady=20)
 
     upperNotesRH = tk.Frame(rightHandFrame, width=100, height=50, bd=4)
     upperNotesRH.pack(side=tk.TOP, padx=20, pady=20)
@@ -38,16 +45,30 @@ class PlayMusicView(tk.Frame):
     bottomNotesRH = tk.Frame(rightHandFrame, width=100, height=50, bd=4)
     bottomNotesRH.pack(side=tk.TOP, padx=20, pady=20)
 
-    buttonsFrame = tk.Frame(self, width=100, height=50, bd=4, relief="raised")
+    buttonsFrame = tk.Frame(self, width=100, height=50)
     buttonsFrame.pack(side=tk.BOTTOM, padx=20, pady=20)
     # -------------------------------------------------------------------------
 
     # ---------- Widgets ------------------------------------------------------
-    title_label = tk.Label(titleFrame, text="Play Music View")
+    title_label = tk.Label(
+      titleFrame,
+      text="Play Music View",
+      font=("Rototo", 24, "bold"))
     return_button = tk.Button(
       buttonsFrame,
       text="Return main screen",
-      command=lambda:controller.switch_frame(mainView.MainView))
+      command=lambda:controller.switch_frame(mainView.MainView),
+      font=("Rototo", 14, "bold"))
+
+    left_hand_title = tk.Label(
+      leftHandTitleFrame,
+      text="Left Hand",
+      font=("Rototo", 14, "bold"))
+
+    right_hand_title = tk.Label(
+      rightHandTitleFrame,
+      text="Rigth Hand",
+      font=("Rototo", 14, "bold"))
 
     self._buttons = []
     for i in range(0, 3):
@@ -57,27 +78,27 @@ class PlayMusicView(tk.Frame):
         for k in range(0, 4):
           if i == 0 and j == 0:
             buttons_note.append(tk.Button(
-              upperNotesLH, bg="cyan"
+              upperNotesLH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k]
             ))
           elif i == 1 and j == 0:
             buttons_note.append(tk.Button(
-              middleNotesLH, bg="grey"
+              middleNotesLH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k]
             ))
           elif i == 2 and j == 0:
             buttons_note.append(tk.Button(
-              bottomNotesLH, bg="grey"
+              bottomNotesLH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k]
             ))
           elif i == 0 and j == 1:
             buttons_note.append(tk.Button(
-              upperNotesRH, bg="grey"
+              upperNotesRH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k + 4]
             ))
           elif i == 1 and j == 1:
             buttons_note.append(tk.Button(
-              middleNotesRH, bg="grey"
+              middleNotesRH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k + 4]
             ))
           else:
             buttons_note.append(tk.Button(
-              bottomNotesRH, bg="grey"
+              bottomNotesRH, bg="white", width=2, height=2, state=tk.DISABLED, text=self._notes[k + 4]
             ))
         buttons_hand.append(buttons_note)
       self._buttons.append(buttons_hand)
@@ -88,16 +109,19 @@ class PlayMusicView(tk.Frame):
     for i in range(0, len(self._buttons)):
       for j in range(0, len(self._buttons[i])):
         for k in range(0, len(self._buttons[i][j])):
-          self._buttons[i][j][k].pack(side=tk.LEFT)
+          self._buttons[i][j][k].pack(side=tk.LEFT, padx=10)
     return_button.pack()
+    left_hand_title.pack()
+    right_hand_title.pack()
     self.pack()
-    self.start_pooling()
+    self.pooling_for_notes()
     # -------------------------------------------------------------------------
 
-  def start_pooling(self):
-    print("hello")
-    self.after(2000, self.continue_pooling)
+  def pooling_for_notes(self):
+    print('Pooling for notes!')
+    self.change_button_colors(self.controller.main_node_thread())
+    self.after(2000, self.pooling_for_notes)
 
-  def continue_pooling(self):
-    self.controller.main_node_thread()
-    self.after(1000, self.continue_pooling)
+  def change_button_colors(self, pressed_notes):
+    None
+
