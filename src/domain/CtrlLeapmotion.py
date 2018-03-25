@@ -67,9 +67,23 @@ class CtrlLeapmotion:
         return Hand.finger_state.IDLE
 
     def getTriggeredFingers(self):
-        pass
-        #for hand in self.hands
-
+        res = self.initializeStructure()
+        for hand in self.hands:
+            i = 1
+            if hand.height < OCTAVE_LIMIT_1:
+                i = 0
+            elif hand.height > OCTAVE_LIMIT_2:
+                i = 2
+            if not hand.hand_type:
+                res[i][0] = (hand.finger_states[Leap.Finger.TYPE_PINKY] == Hand.finger_state.TRIGGER)
+                res[i][1] = (hand.finger_states[Leap.Finger.TYPE_RING] == Hand.finger_state.TRIGGER)
+                res[i][2] = (hand.finger_states[Leap.Finger.TYPE_MIDDLE] == Hand.finger_state.TRIGGER)
+                res[i][3] = (hand.finger_states[Leap.Finger.TYPE_INDEX] == Hand.finger_state.TRIGGER)
+            else:
+                res[i][4] = (hand.finger_states[Leap.Finger.TYPE_INDEX] == Hand.finger_state.TRIGGER)
+                res[i][5] = (hand.finger_states[Leap.Finger.TYPE_MIDDLE] == Hand.finger_state.TRIGGER)
+                res[i][6] = (hand.finger_states[Leap.Finger.TYPE_RING] == Hand.finger_state.TRIGGER)
+                res[i][7] = (hand.finger_states[Leap.Finger.TYPE_RING] == Hand.finger_state.TRIGGER)
 
     def getTriggeredAndHeldFingers(self):
         pass
@@ -79,6 +93,12 @@ class CtrlLeapmotion:
 
     def radToDeg(self, rad):
         return rad * 180.0 / math.pi
+
+    def initializeStructure(self):
+        aux = []
+        for i in range(3):
+            aux[i] = [False for j in range(8)]
+        return aux
 
 def main():
     c = CtrlLeapmotion()
