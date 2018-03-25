@@ -4,12 +4,11 @@ class SoundPlayer:
     channels = []
     sounds = []
 
-    def initializePiano(self):
+    def __init__(self):
         pygame.init()
         channels = [0 for i in range(24)]
         for i in range(24):
             channels[i] = pygame.mixer.Channel(i)
-
         sounds = [0 for i in range(24)]
         for i in range(24):
             sounds[i] = pygame.mixer.Sound("./sonidos/" + str(i) + ".wav")

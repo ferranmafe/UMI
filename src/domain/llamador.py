@@ -1,9 +1,9 @@
-import playNotes
+import SoundPlayer
 
 
 
 def main():
-    pn = playNotes.PlayNotes()
+    pn = SoundPlayer.PlayNotes()
     pn.inicializar()
 
     pn.tocar(['la','re','fa'])

@@ -1,17 +1,13 @@
 import SoundPlayer
 
 class CtrlSound:
+    soundPlayer = None
 
     def __init__(self):
-        pass
+        self.soundPlayer = SoundPlayer()
 
     def reproduceSoundEvents(self, soundEventsDetected):
-        for row in soundEventsDetected:
-            for sound in soundEventsDetected[row]:
-                if sound == 1:
-                    #Play sound
-
-
+        self.soundPlayer.playSounds(soundEventsDetected)
 
 def main():
     ctrl = CtrlSound()
