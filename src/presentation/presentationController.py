@@ -18,6 +18,7 @@ class PresentationController(tk.Tk):
 
       pid = os.fork()
       if pid:
+          print pid
           os.close(w)
           self.r = os.fdopen(r)
       else:
@@ -27,8 +28,7 @@ class PresentationController(tk.Tk):
           os.close(0)
           os.dup2(w, 0)
           """
-          os.execlp('/usr/bin/python', '../domain/CtrlDomain.py')
-
+          os.execlp('/usr/bin/python2.7', '/usr/bin/python2.7', "/home/akuja/akuja_drive/Marc/Hackathons/HackBordeaux'18/UMI/src/domain/CtrlDomain.py")
 
 
     def switch_frame(self, frame_class):

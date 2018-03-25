@@ -11,7 +11,7 @@ class SoundPlayer:
             channels[i] = pygame.mixer.Channel(i)
         sounds = [0 for i in range(24)]
         for i in range(24):
-            sounds[i] = pygame.mixer.Sound("./sonidos2/" + str(i) + ".wav")
+            sounds[i] = pygame.mixer.Sound("/home/akuja/akuja_drive/Marc/Hackathons/HackBordeaux'18/UMI/src/domain/sonidos2/" + str(i) + ".wav")
         self.sounds = sounds
         self.channels = channels
 
