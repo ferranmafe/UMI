@@ -117,9 +117,6 @@ class PlayMusicView(tk.Frame):
     self.pack()
 
     self.controller.ctrlDomain.initializeAction()
-    thread = Thread(target=self.controller.main_node_thread)
-    thread.daemon = True #Run along the main
-    thread.start() #Resume thread execution
     self.change_button_colors()
     # -------------------------------------------------------------------------
 

@@ -1,6 +1,7 @@
 import Tkinter as tk
 import mainView
 from src.domain.CtrlDomain import CtrlDomain
+import os
 
 class PresentationController(tk.Tk):
     def __init__(self):
@@ -13,15 +14,29 @@ class PresentationController(tk.Tk):
       self.ctrlDomain = CtrlDomain()
       self.res = None #Shared with the thread
 
+      r, w = os.pipe()
+
+      pid = os.fork()
+      if pid:
+          os.close(w)
+          self.r = os.fdopen(r)
+      else:
+          # This is the child process
+          os.close(r)
+          """
+          os.close(0)
+          os.dup2(w, 0)
+          """
+          os.execlp('/usr/bin/python', '../domain/CtrlDomain.py')
+
+
+
     def switch_frame(self, frame_class):
       new_frame = frame_class(master=self.container, controller=self)
       self._frame.destroy()
       self._frame = new_frame
 
-    def main_node_thread(self):
-      while True:
-        self.res = self.ctrlDomain.getNextMove()
-        #print self.res
+
 
 if __name__ == "__main__":
     app = PresentationController()
