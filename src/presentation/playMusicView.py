@@ -1,6 +1,7 @@
 # Multi-frame tkinter application v1.3
 import Tkinter as tk
 import mainView
+from threading import Thread
 
 class PlayMusicView(tk.Frame):
   def __init__(self, master, controller):
@@ -114,16 +115,22 @@ class PlayMusicView(tk.Frame):
     left_hand_title.pack()
     right_hand_title.pack()
     self.pack()
-    self.initializeDomain()
+
+    self.controller.ctrlDomain.initializeAction()
+    thread = Thread(target=self.controller.main_node_thread, args=())
+    thread.daemon = True #Run along the main
+    thread.start() #Resume thread execution
     self.pooling_for_notes()
     # -------------------------------------------------------------------------
 
   def pooling_for_notes(self):
     print('Pooling for notes!')
-    self.change_button_colors(self.controller.main_node_thread())
-    self.after(2000, self.pooling_for_notes)
 
-  def change_button_colors(self, pressed_notes):
+    self.change_button_colors()
+    self.after(0, self.pooling_for_notes)
+
+  def change_button_colors(self):
+    pressed_notes = self.controller.res
     for i in range(0, len(pressed_notes)):
       for j in range(0, len(pressed_notes[i])):
         k = 0
@@ -137,5 +144,3 @@ class PlayMusicView(tk.Frame):
         elif pressed_notes [i][j] == 2:
           self._buttons[i][k][j%4].configure(bg="cyan")
 
-  def initializeDomain(self):
-    self.controller.ctrlDomain.initializeAction()

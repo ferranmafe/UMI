@@ -8,7 +8,11 @@ class CtrlSound:
 
     def reproduceSoundEvents(self, soundEventsDetected):
         #soundEventsDetected is a 3x8 Matrix
+        print "Eventos a tratar (mat)"
+        print soundEventsDetected
         soundsToPlay = soundEventsDetected[0] + soundEventsDetected[1] + soundEventsDetected[2]
+        print "Eventos a tratar (vect)"
+        print soundsToPlay
         self.soundPlayer.playSounds(soundsToPlay)
 
 def main():

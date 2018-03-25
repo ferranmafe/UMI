@@ -11,6 +11,7 @@ class PresentationController(tk.Tk):
       self.container.pack(side="top", fill="both", expand=1)
       self._frame = mainView.MainView(master=self.container, controller=self)
       self.ctrlDomain = CtrlDomain()
+      self.res = None #Shared with the thread
 
     def switch_frame(self, frame_class):
       new_frame = frame_class(master=self.container, controller=self)
@@ -18,7 +19,9 @@ class PresentationController(tk.Tk):
       self._frame = new_frame
 
     def main_node_thread(self):
-        return self.ctrlDomain.detectPressEvents()
+      while True:
+        self.res = self.ctrlDomain.getNextMove()
+        #print self.res
 
 if __name__ == "__main__":
     app = PresentationController()
