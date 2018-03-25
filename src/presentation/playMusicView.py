@@ -117,17 +117,11 @@ class PlayMusicView(tk.Frame):
     self.pack()
 
     self.controller.ctrlDomain.initializeAction()
-    thread = Thread(target=self.controller.main_node_thread, args=())
+    thread = Thread(target=self.controller.main_node_thread)
     thread.daemon = True #Run along the main
     thread.start() #Resume thread execution
-    self.pooling_for_notes()
-    # -------------------------------------------------------------------------
-
-  def pooling_for_notes(self):
-    print('Pooling for notes!')
-
     self.change_button_colors()
-    self.after(0, self.pooling_for_notes)
+    # -------------------------------------------------------------------------
 
   def change_button_colors(self):
     pressed_notes = self.controller.res
@@ -143,4 +137,5 @@ class PlayMusicView(tk.Frame):
           self._buttons[i][k][j%4].configure(bg="red")
         elif pressed_notes [i][j] == 2:
           self._buttons[i][k][j%4].configure(bg="cyan")
+    self.after(10, self.change_button_colors())
 
