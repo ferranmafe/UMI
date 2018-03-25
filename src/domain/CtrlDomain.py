@@ -1,4 +1,4 @@
-import CtrlLeapmotion
+import CtrlLeapmotion, CtrlSound
 
 class CtrlDomain:
     ctrlLeapmotion = None
@@ -29,3 +29,12 @@ class CtrlDomain:
 
     def reproduceSoundEvents(self, soundEventsDetected):
         self.ctrlSound.reproduceSoundEvents(soundEventsDetected)
+
+def main():
+    domain = CtrlDomain()
+    domain.initializeAction()
+    while 1:
+        pass
+
+if __name__ == "__main__":
+    main()

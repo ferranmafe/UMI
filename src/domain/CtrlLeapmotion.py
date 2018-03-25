@@ -67,12 +67,12 @@ class CtrlLeapmotion:
         return Hand.finger_state.IDLE
 
     def getTriggeredFingers(self):
-
-        for hand in self.hands
+        pass
+        #for hand in self.hands
 
 
     def getTriggeredAndHeldFingers(self):
-
+        pass
 
     def degToRad(self, deg):
         return deg * math.pi / 180.0
