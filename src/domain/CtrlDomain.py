@@ -1,4 +1,4 @@
-import CtrlLeapmotion, TusHuevos
+import CtrlLeapmotion, CtrlSound
 
 class CtrlDomain:
     ctrlLeapmotion = None
@@ -10,7 +10,7 @@ class CtrlDomain:
 
     def initializeAction(self):
         self.ctrlLeapmotion = CtrlLeapmotion.CtrlLeapmotion()
-        self.ctrlSound = TusHuevos.CtrlSound()
+        self.ctrlSound = CtrlSound.CtrlSound()
 
     def getNextMove(self):
         self.updateLeapmotionState()
